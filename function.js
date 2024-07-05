@@ -7,7 +7,7 @@
 
 import {MongoClient} from 'mongodb';			// do "package.json" vnějšího objektu se přidá prvek "type":"module"
 
-const uri = "mongodb+srv://user01:kolika@cluster01.acyixff.mongodb.net/?retryWrites=true&w=majority&appName=cluster01";
+const uri = process.env.mongodb_uri;
 const client = new MongoClient(uri);
 
 export async function fetchData(mongoQueryObj) {
