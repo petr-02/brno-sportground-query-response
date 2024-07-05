@@ -7,13 +7,13 @@
 
 import {MongoClient} from 'mongodb';			// do "package.json" vnějšího objektu se přidá prvek "type":"module"
 
-const uri = "<connection string>";                      // <-- doplnit connection string
+const uri = "mongodb+srv://user01:kolika@cluster01.acyixff.mongodb.net/?retryWrites=true&w=majority&appName=cluster01";
 const client = new MongoClient(uri);
 
 export async function fetchData(mongoQueryObj) {
   try {
     await client.connect();
-    const Brno = client.db('Brno')
+    const Brno = client.db('Brno');
     const SportGround = Brno.collection('sport_ground');
 
     // sport grounds (=categories 7), only ones that fit user query, grouped into categories 6 (category above particular sport ground), that are in turn grouped into categories 5 (particular districts or universities), that are documents in array  (with added data of category 5 and 6 ...)
@@ -83,13 +83,13 @@ import {URL} from 'url';
 
 export function createMongoQueryObject(url) {
   const URLObj = new URL(url);                                                   // URLObj.searchParams --> URLSearchParams{"param_name" => "param_val1,param_val2,param_val3, ...", "param_name2" => "param_val1,param_val2,...", ...}
-  const URLParamObj={}
+  const URLParamObj={};
 
   URLObj.searchParams.forEach(function(val,key){                                 // fill "URLParamObj" with key/value: "param_name=['param_val1','param_val2','param_val3',...]" (serie of non empty non numerical string values; namely one key/value for each of "category3", "category1", "surface", "category5")(these are from fe search form, that in turn load options from database, if db filled ok, there should be not empty value for them (mongodb code remove cat1 and surface options, "$ifNull", not cat3 and cat5), and if, something wrong will be visible in search form) or again "param_name=['param_min_value','param_max_value']" (min and max numerical string value, at least one of two non empty ""; namely one key/value for each of "width", "length", "depth", "price")( <input type='number'>, if left unfilled, bear empty string, but fe code will not let pass param with all values empty like "param=,,," so maximally one of the value could be empty string)
-    URLParamObj[key]=val.split(",")
+    URLParamObj[key]=val.split(",");
   })
 
-  const mongoQueryObj={}
+  const mongoQueryObj={};
 
   addRulesToMongoQueryObj(URLParamObj,mongoQueryObj);
 
