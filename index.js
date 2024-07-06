@@ -18,9 +18,9 @@ const server = http.createServer( async function(req, res) {
 
   const origin = req.headers.origin;
   if(allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);                      // allows requests from mentioned origin (if "*" instead of "https://...", all origin will be allowed)
+    res.setHeader('Access-Control-Allow-Origin', origin);                      // allows requests from mentioned origin (there can be single origin "https://...", or asterix "*" allowing any origin)
   }
-  res.setHeader('Access-Control-Allow-Methods', 'GET');                        // allows only get method
+  res.setHeader('Access-Control-Allow-Methods', 'GET');                        // allows only get method (to allow more than one write 'GET, POST, ...' instead of 'GET')
   res.setHeader('Access-Control-Allow-Headers', '');                           // allows no headers
 
   res.writeHead(200, {'Content-Type': 'application/json'});
@@ -30,6 +30,4 @@ const server = http.createServer( async function(req, res) {
 server.listen(port, hostname, () => {
   console.log(`server is running at http://${hostname}:${port}/`);
 });
-
-
 
